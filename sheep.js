@@ -101,6 +101,9 @@ if (id) {
 	setHelperPosition(gridFocus, i, j);
 }
 
+var dialog = document.querySelector('dialog');
+dialogPolyfill.registerDialog(dialog);
+
 document.querySelector('[href="#more"]').addEventListener('click', function(event) {
 	event.preventDefault();
 	document.querySelector('#more').showModal();

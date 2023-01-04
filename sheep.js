@@ -5,7 +5,6 @@ ctx.lineCap = 'round';
 var grid = document.getElementById('grid');
 var gridHover = grid.querySelector('.grid__hover');
 var gridFocus = grid.querySelector('.grid__focus');
-var gridImg = grid.querySelector('img');
 
 var columns = 125;
 var rows = 80;
@@ -30,7 +29,7 @@ var grayToColor = function(gray) {
 };
 
 var eachWithTimeout = function(array, fn, timeout) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 		var tmp = function(i) {
 			if (i >= array.length) {
 				resolve();
@@ -51,7 +50,7 @@ var drawSheep = function(sheep) {
 
 	ctx.beginPath();
 	return eachWithTimeout(sheep.drawing.split('_'), function(s) {
-		cmd = s.split('.');
+		var cmd = s.split('.');
 
 		if (cmd[0] === 'lift') {
 			ctx.beginPath();

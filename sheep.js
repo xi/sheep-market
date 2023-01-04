@@ -67,9 +67,9 @@ var drawSheep = function(sheep) {
 	}, 10);
 };
 
-var setHelperPosition = function(el, i, j) {
-	el.style.top = 100 / rows * i + '%';
-	el.style.left = 100 / columns * j + '%';
+var setHelperPosition = function(el, row, col) {
+	el.style.top = 100 / rows * row + '%';
+	el.style.left = 100 / columns * col + '%';
 };
 
 grid.addEventListener('mousemove', function(event) {
@@ -77,14 +77,14 @@ grid.addEventListener('mousemove', function(event) {
 	var x = (event.clientX - rect.x) / rect.width;
 	var y = (event.clientY - rect.y) / rect.height;
 
-	var i = Math.floor(y * rows);
-	i = Math.max(0, Math.min(rows - 1, i));
-	var j = Math.floor(x * columns);
-	j = Math.max(0, Math.min(columns - 1, j));
-	var n = rows * j + i + 1;
+	var row = Math.floor(y * rows);
+	row = Math.max(0, Math.min(rows - 1, row));
+	var col = Math.floor(x * columns);
+	col = Math.max(0, Math.min(columns - 1, col));
+	var n = rows * col + row + 1;
 
 	grid.href = '?sheep=' + n;
-	setHelperPosition(gridHover, i, j);
+	setHelperPosition(gridHover, row, col);
 });
 
 var q = parseQuery(location.search);
@@ -95,9 +95,9 @@ if (id) {
 		.then(parseQuery)
 		.then(drawSheep);
 
-	var i = (id - 1) % rows;
-	var j = Math.floor((id - 1) / rows);
-	setHelperPosition(gridFocus, i, j);
+	var row = (id - 1) % rows;
+	var col = Math.floor((id - 1) / rows);
+	setHelperPosition(gridFocus, row, col);
 }
 
 document.querySelector('[href="#more"]').addEventListener('click', function(event) {

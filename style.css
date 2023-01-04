@@ -54,6 +54,7 @@ footer {
 
 #grid img {
     width: 100%;
+    vertical-align: bottom;
 }
 
 .grid__focus,

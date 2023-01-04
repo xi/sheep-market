@@ -89,6 +89,27 @@ grid.addEventListener('mousemove', function(event) {
 	updateHover();
 });
 
+grid.addEventListener('keydown', function(event) {
+	var dx = 0;
+	var dy = 0;
+	if (event.code === 'ArrowUp' && hoverRow > 0) {
+		dy = -1;
+	} else if (event.code === 'ArrowRight' && hoverCol + 1 < columns) {
+		dx = 1;
+	} else if (event.code === 'ArrowDown' && hoverRow + 1 < rows) {
+		dy = 1;
+	} else if (event.code === 'ArrowLeft' && hoverCol > 0) {
+		dx = -1;
+	}
+	if (dx || dy) {
+		event.preventDefault();
+		hoverCol += dx;
+		hoverRow += dy;
+		updateHover();
+		gridHover.scrollIntoView();
+	}
+});
+
 var q = parseQuery(location.search);
 var id = parseInt(q.sheep, 10);
 if (id) {

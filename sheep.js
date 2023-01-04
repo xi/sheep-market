@@ -8,6 +8,8 @@ var gridFocus = grid.querySelector('.grid__focus');
 
 var columns = 125;
 var rows = 80;
+var hoverCol = 0;
+var hoverRow = 0;
 
 
 var parseQuery = function(query) {
@@ -67,24 +69,24 @@ var drawSheep = function(sheep) {
 	}, 10);
 };
 
-var setHelperPosition = function(el, row, col) {
-	el.style.top = 100 / rows * row + '%';
-	el.style.left = 100 / columns * col + '%';
+var setHelperPosition = function(el) {
+	el.style.top = 100 / rows * hoverRow + '%';
+	el.style.left = 100 / columns * hoverCol + '%';
+};
+
+var updateHover = function() {
+	var n = rows * hoverCol + hoverRow + 1;
+	grid.href = '?sheep=' + n;
+	setHelperPosition(gridHover);
 };
 
 grid.addEventListener('mousemove', function(event) {
 	var rect = grid.getBoundingClientRect();
-	var x = (event.clientX - rect.x) / rect.width;
-	var y = (event.clientY - rect.y) / rect.height;
-
-	var row = Math.floor(y * rows);
-	row = Math.max(0, Math.min(rows - 1, row));
-	var col = Math.floor(x * columns);
-	col = Math.max(0, Math.min(columns - 1, col));
-	var n = rows * col + row + 1;
-
-	grid.href = '?sheep=' + n;
-	setHelperPosition(gridHover, row, col);
+	hoverRow = (event.clientY - rect.y) / rect.height * rows;
+	hoverRow = Math.max(0, Math.min(rows - 1, Math.floor(hoverRow)));
+	hoverCol = (event.clientX - rect.x) / rect.width * columns;
+	hoverCol = Math.max(0, Math.min(columns - 1, Math.floor(hoverCol)));
+	updateHover();
 });
 
 var q = parseQuery(location.search);
@@ -95,9 +97,10 @@ if (id) {
 		.then(parseQuery)
 		.then(drawSheep);
 
-	var row = (id - 1) % rows;
-	var col = Math.floor((id - 1) / rows);
-	setHelperPosition(gridFocus, row, col);
+	hoverRow = (id - 1) % rows;
+	hoverCol = Math.floor((id - 1) / rows);
+	setHelperPosition(gridFocus);
+	updateHover();
 }
 
 document.querySelector('[href="#more"]').addEventListener('click', function(event) {

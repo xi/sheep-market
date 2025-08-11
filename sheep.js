@@ -18,7 +18,7 @@ var parseQuery = function(query) {
 		query = query.substr(1);
 	}
 	var ret = {};
-	query.split('&').forEach(function(part) {
+	query.split('&').forEach(part => {
 		var a = part.split('=');
 		ret[a[0]] = a[1];
 	});
@@ -31,12 +31,12 @@ var grayToColor = function(gray) {
 };
 
 var eachWithTimeout = function(array, fn, timeout) {
-	return new Promise(function(resolve) {
-		var tmp = function(i) {
+	return new Promise(resolve => {
+		var tmp = i => {
 			if (i >= array.length) {
 				resolve();
 			} else {
-				setTimeout(function() {
+				setTimeout(() => {
 					fn(array[i]);
 					tmp(i + 1);
 				}, timeout);
@@ -51,7 +51,7 @@ var drawSheep = function(sheep) {
 	var yOff = parseFloat(sheep.yOff, 10);
 
 	ctx.beginPath();
-	return eachWithTimeout(sheep.drawing.split('_'), function(s) {
+	return eachWithTimeout(sheep.drawing.split('_'), s => {
 		var cmd = s.split('.');
 
 		if (cmd[0] === 'lift') {
@@ -80,7 +80,7 @@ var updateHover = function() {
 	setHelperPosition(gridHover);
 };
 
-grid.addEventListener('mousemove', function(event) {
+grid.addEventListener('mousemove', event => {
 	var rect = grid.getBoundingClientRect();
 	hoverRow = (event.clientY - rect.y) / rect.height * rows;
 	hoverRow = Math.max(0, Math.min(rows - 1, Math.floor(hoverRow)));
@@ -89,7 +89,7 @@ grid.addEventListener('mousemove', function(event) {
 	updateHover();
 });
 
-grid.addEventListener('keydown', function(event) {
+grid.addEventListener('keydown', event => {
 	var dx = 0;
 	var dy = 0;
 	if (event.code === 'ArrowUp' && hoverRow > 0) {
@@ -124,7 +124,7 @@ if (id) {
 	updateHover();
 }
 
-document.querySelector('[href="#more"]').addEventListener('click', function(event) {
+document.querySelector('[href="#more"]').addEventListener('click', event => {
 	event.preventDefault();
 	document.querySelector('#more').showModal();
 });

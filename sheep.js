@@ -12,19 +12,6 @@ var hoverCol = 0;
 var hoverRow = 0;
 
 
-var parseQuery = function(query) {
-	query = query.trim();
-	if (query[0] === '?') {
-		query = query.substr(1);
-	}
-	var ret = {};
-	query.split('&').forEach(part => {
-		var a = part.split('=');
-		ret[a[0]] = a[1];
-	});
-	return ret;
-};
-
 var grayToColor = function(gray) {
 	var c = ('00' + gray.toString(16)).substr(-2);
 	return '#' + c + c + c;
@@ -47,23 +34,20 @@ var eachWithTimeout = function(array, fn, timeout) {
 };
 
 var drawSheep = function(sheep) {
-	var xOff = parseFloat(sheep.xOff, 10);
-	var yOff = parseFloat(sheep.yOff, 10);
+	var yOff = sheep[0] / 2;
+	var xOff = sheep[1] / 2;
 
 	ctx.beginPath();
-	return eachWithTimeout(sheep.drawing.split('_'), s => {
-		var cmd = s.split('.');
-
+	return eachWithTimeout(sheep.slice(2), cmd => {
 		if (cmd[0] === 'lift') {
 			ctx.beginPath();
 		} else if (cmd[0] === 'stroke') {
-			ctx.lineWidth = parseInt(cmd[1], 10);
+			ctx.lineWidth = cmd[1];
 		} else if (cmd[0] === 'grey') {
-			ctx.strokeStyle = grayToColor(parseInt(cmd[1], 10));
-		} else if (parseInt(cmd[0], 10)) {
-			var coords = cmd.map(x => parseInt(x, 10));
-			ctx.moveTo(coords[2] + xOff, coords[3] + yOff);
-			ctx.lineTo(coords[0] + xOff, coords[1] + yOff);
+			ctx.strokeStyle = grayToColor(cmd[1]);
+		} else {
+			ctx.moveTo(cmd[2] + xOff, cmd[3] + yOff);
+			ctx.lineTo(cmd[0] + xOff, cmd[1] + yOff);
 			ctx.stroke();
 		}
 	}, 10);
@@ -110,13 +94,13 @@ grid.addEventListener('keydown', event => {
 	}
 });
 
-var q = parseQuery(location.search);
-var id = parseInt(q.sheep, 10);
+var q = new URLSearchParams(location.search);
+var id = parseInt(q.get('sheep'), 10);
 if (id) {
-	fetch('data/' + id)
-		.then(r => r.text())
-		.then(parseQuery)
-		.then(drawSheep);
+	var response = await fetch(`bin/${Math.floor((id - 1) / 100)}`);
+	var data = CBOR.decode(await response.arrayBuffer());
+	var sheep = data[(id - 1) % 100];
+	drawSheep(sheep);
 
 	hoverRow = (id - 1) % rows;
 	hoverCol = Math.floor((id - 1) / rows);

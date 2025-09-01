@@ -38,6 +38,11 @@ footer {
     color: #777;
 }
 
+dialog {
+    border: 1px solid;
+    box-shadow: 0 0 0.5em #0004;
+}
+
 .top {
     margin-bottom: 1.5em;
 }

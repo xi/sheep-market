@@ -10,9 +10,10 @@ html {
 
 body {
     box-sizing: content-box;
-    margin: 0.5em auto 0;
-    max-width: 80em;
-    padding: 0 1em;
+    max-inline-size: 80em;
+    margin-block: 0.5em 0;
+    margin-inline: auto;
+    padding-inline: 1em;
 }
 
 a {
@@ -44,12 +45,12 @@ dialog {
 }
 
 .top {
-    margin-bottom: 1.5em;
+    margin-block-end: 1.5em;
 }
 
 #canvas {
     border: 1px solid #e6e6e6;
-    max-width: 100%;
+    inline-size: 100%;
 }
 
 #grid {
@@ -58,7 +59,8 @@ dialog {
 }
 
 #grid img {
-    width: 100%;
+    inline-size: 100%;
+    block-size: auto;
     vertical-align: bottom;
 }
 
@@ -79,11 +81,11 @@ dialog {
 }
 
 #more {
-    max-width: 40em;
+    max-inline-size: 40em;
 }
 
 #more p {
-    margin: 3em 0;
+    margin-block: 3em;
 }
 
 #more ul {
@@ -94,7 +96,7 @@ dialog {
 
 #more li {
     display: block;
-    margin: 1.5em 0;
+    margin-block: 1.5em;
 }
 
 @media (min-width: 600px) {

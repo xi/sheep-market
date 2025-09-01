@@ -16,7 +16,7 @@ body {
 }
 
 a {
-    color: #777;
+    color: #666;
 }
 
 a:hover {
@@ -35,7 +35,7 @@ footer {
     font-size: 80%;
     text-align: center;
     padding: 0.5em;
-    color: #777;
+    color: #666;
 }
 
 dialog {
